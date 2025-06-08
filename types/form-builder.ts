@@ -103,6 +103,7 @@ export interface CheckboxComponentConfig
 export interface RadioComponentConfig
   extends Omit<RadioGroupProps, 'modelValue'>,
     FormBuilderFields {
+  id: string;
   type: 'radio';
 }
 
@@ -133,10 +134,12 @@ export interface FileComponentConfig
 }
 
 export interface SwitchComponentConfig extends Omit<SwitchProps, 'modelValue'>, FormBuilderFields {
+  id: string;
   type: 'switch';
 }
 
 export interface SliderComponentConfig extends Omit<SliderProps, 'modelValue'>, FormBuilderFields {
+  id: string;
   type: 'slider';
 }
 
@@ -154,7 +157,6 @@ export type ComponentConfig =
   | SliderComponentConfig;
 
 export interface FormConfig {
-  id: string;
   name: string;
   components: ComponentConfig[];
   gridColumns?: number; // Total number of grid columns (default: 12)
