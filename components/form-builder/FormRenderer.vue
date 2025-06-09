@@ -47,17 +47,17 @@ function handleCancel() {
       variant="soft"
       title="JSON Parse Error"
       :description="parseError"
-      class="mb-2"
+      class="mb-4"
     />
 
     <!-- Empty state -->
     <div
       v-else-if="!formConfig || !formConfig.components || formConfig.components.length === 0"
-      class="py-10 text-center text-gray-500"
+      class="py-12 text-center text-gray-500"
     >
-      <Icon name="i-heroicons-document-text" class="mx-auto mb-2 h-12 w-12 text-gray-400" />
+      <Icon name="i-heroicons-document-text" class="mx-auto mb-4 h-12 w-12 text-gray-400" />
       <p class="text-lg font-medium">No form configuration</p>
-      <p class="mt0 text-sm">Edit the JSON schema to see the form preview</p>
+      <p class="mt-2 text-sm">Edit the JSON schema to see the form preview</p>
     </div>
 
     <!-- Form -->
@@ -65,7 +65,7 @@ function handleCancel() {
       v-else
       :validation-schema="validationSchema"
       :initial-values="initialValues"
-      class="space-y-2"
+      class="space-y-4"
       @submit="handleSubmit"
     >
       <div class="grid" :style="gridStyle">
@@ -109,7 +109,7 @@ function handleCancel() {
       <!-- Form Actions -->
       <div
         v-if="formConfig.submitButton || formConfig.cancelButton"
-        class="mt-4 flex justify-end gap-2"
+        class="mt-6 flex justify-end gap-2"
       >
         <UButton
           v-if="formConfig.cancelButton"
