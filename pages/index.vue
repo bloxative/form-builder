@@ -4,6 +4,7 @@ const formSchema = ref(
     {
       components: [
         {
+          name: 'username',
           type: 'text',
           label: 'Full Name',
           placeholder: 'Enter your full name',
@@ -13,6 +14,7 @@ const formSchema = ref(
           }
         },
         {
+          name: 'email',
           type: 'text',
           inputType: 'email',
           label: 'Email Address',
