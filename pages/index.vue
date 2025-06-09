@@ -1,16 +1,34 @@
 <script setup lang="ts">
+import Code from '~/components/code.vue';
+
 const formSchema = ref(
   JSON.stringify(
     {
       components: [
         {
-          name: 'username',
+          name: 'firstName',
           type: 'text',
-          label: 'Full Name',
-          placeholder: 'Enter your full name',
+          label: 'Last Name',
+          placeholder: 'Enter your first name',
           validation: {
             required: true,
             minLength: 2
+          },
+          grid: {
+            col: 6
+          }
+        },
+        {
+          name: 'lastName',
+          type: 'text',
+          label: 'Last Name',
+          placeholder: 'Enter your last name',
+          validation: {
+            required: true,
+            minLength: 2
+          },
+          grid: {
+            col: 6
           }
         },
         {
@@ -41,12 +59,22 @@ const formSchema = ref(
   )
 );
 
+const { $toast } = useNuxtApp();
+
 function handleFormSubmit(values: Record<string, unknown>) {
-  console.log('Form submitted with values:', values);
+  const code = `const formData = ${JSON.stringify(values, null, 2)};`;
+  $toast(markRaw(Code), {
+    componentProps: {
+      code
+    },
+    classes: {
+      content: 'w-full'
+    }
+  });
 }
 
 function handleFormCancel() {
-  console.log('Form cancelled');
+  $toast.info('Form Cancelled.');
 }
 </script>
 
