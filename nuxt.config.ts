@@ -17,6 +17,20 @@ const modules = defineNuxtConfig({
 });
 
 /**
+ * Build
+ */
+const build = defineNuxtConfig({
+  app: {
+    baseURL: '/form-builder/',
+    buildAssetsDir: 'assets/'
+  },
+
+  nitro: {
+    preset: 'github-pages'
+  }
+});
+
+/**
  * App
  */
 const app = defineNuxtConfig({
@@ -27,7 +41,8 @@ const app = defineNuxtConfig({
     head: {
       htmlAttrs: {
         lang: 'en'
-      }
+      },
+      title: 'Form Builder'
     }
   },
 
@@ -47,4 +62,4 @@ const app = defineNuxtConfig({
   css: [resolve('./assets/css/main.css')]
 });
 
-export default defu(modules, app);
+export default defu(modules, build, app);
