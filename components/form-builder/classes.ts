@@ -14,26 +14,19 @@ export class FormComponent<T extends ComponentConfig = ComponentConfig> {
   private config: T;
 
   constructor(config: T) {
-    this.config = { ...config };
-    if (!this.config.id) {
-      this.config.id = this.generateId();
+    if (!config.name) {
+      throw new FormBuilderError('Component must have a name');
     }
+
+    this.config = { ...config };
   }
 
-  private generateId(): string {
-    return `component_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-  }
-
-  get id(): string {
-    return this.config.id ?? '';
+  get name(): string {
+    return this.config.name!;
   }
 
   get type(): T['type'] {
     return this.config.type;
-  }
-
-  get name(): string {
-    return this.config.name ?? '';
   }
 
   getConfig(): T {
@@ -90,21 +83,16 @@ export class FormBuilder {
       throw new FormBuilderError(`Component validation failed (${validation.errors.join(', ')})`);
     }
 
-    // Check for duplicate names
-    const existingComponent = Array.from(this.components.values()).find(
-      (c) => c.name === component.name && c.id !== component.id
-    );
-
-    if (existingComponent) {
+    if (this.components.has(component.name)) {
       throw new FormBuilderError(`Component with name "${component.name}" already exists`);
     }
 
-    this.components.set(component.id, component);
+    this.components.set(component.name, component);
     this.syncComponentsArray();
   }
 
-  getComponent(componentId: string): FormComponent | undefined {
-    return this.components.get(componentId);
+  getComponent(componentName: string): FormComponent | undefined {
+    return this.components.get(componentName);
   }
 
   private syncComponentsArray(): void {

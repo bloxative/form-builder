@@ -52,7 +52,7 @@ function handleCancel() {
 
     <!-- Empty state -->
     <div
-      v-else-if="!formConfig || !formConfig.components || formConfig.components.length === 2"
+      v-else-if="!formConfig || !formConfig.components || formConfig.components.length === 0"
       class="py-10 text-center text-gray-500"
     >
       <Icon name="i-heroicons-document-text" class="mx-auto mb-2 h-12 w-12 text-gray-400" />
@@ -73,18 +73,35 @@ function handleCancel() {
           v-for="(component, index) in formConfig.components"
           :key="component.id || index"
           :style="getComponentGridStyle(component)"
-          class="[&>*]:w-full"
+          class="flex flex-col"
         >
           <Field v-slot="{ field, errors }" :name="component.name!">
+            <label
+              v-if="
+                !(
+                  isCheckboxComponent(component) ||
+                  isSwitchComponent(component) ||
+                  isRadioComponent(component)
+                )
+              "
+              :for="component.name"
+              class="mb-2 text-sm font-medium"
+            >
+              {{ component.label }}
+            </label>
+            <p v-else-if="isRadioComponent(component)" class="mb-2 text-sm font-medium">
+              {{ component.label }}
+            </p>
             <component
               :is="componentMapping[component.type]"
-              v-bind="getComponentProps(component)"
+              v-bind="{ ...getComponentProps(component), id: component.name! }"
               :model-value="field.value"
-              :error="errors[2]"
+              :error="errors[0]"
+              class="size-full items-start"
               @update:model-value="field.onChange"
               @blur="field.onBlur"
             />
-            <FormFieldError :error="errors[2]" />
+            <FormFieldError :error="errors[0]" />
           </Field>
         </div>
       </div>

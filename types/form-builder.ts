@@ -48,6 +48,7 @@ export interface ValidationRule {
 }
 
 export interface FormBuilderFields {
+  label: string;
   type: ComponentType;
   validation?: ValidationRule;
   grid?: GridLayout;
@@ -78,11 +79,10 @@ export interface TextareaComponentConfig
 
 export interface SelectComponentConfig extends Omit<SelectProps, 'modelValue'>, FormBuilderFields {
   type: 'select';
-  options: { label: string; value: unknown }[];
 }
 
 export interface CheckboxComponentConfig
-  extends Omit<CheckboxProps, 'modelValue'>,
+  extends Omit<CheckboxProps, 'modelValue' | 'label'>,
     FormBuilderFields {
   type: 'checkbox';
 }
@@ -92,7 +92,6 @@ export interface RadioComponentConfig
     FormBuilderFields {
   id: string;
   type: 'radio';
-  options: { label: string; value: unknown }[];
 }
 
 export interface DateComponentConfig
@@ -121,7 +120,9 @@ export interface FileComponentConfig
   capture?: 'user' | 'environment';
 }
 
-export interface SwitchComponentConfig extends Omit<SwitchProps, 'modelValue'>, FormBuilderFields {
+export interface SwitchComponentConfig
+  extends Omit<SwitchProps, 'modelValue' | 'label'>,
+    FormBuilderFields {
   id: string;
   type: 'switch';
 }

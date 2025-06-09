@@ -4,12 +4,21 @@ export function getComponentGridStyle(component: ComponentConfig, gridColumns: n
   const style: Record<string, string> = {};
 
   const colSpan = component.grid?.col || gridColumns;
-  style.gridColumn = `span ${colSpan}`;
+  const colStart = component.grid?.colStart;
 
-  if (component.grid) {
-    if (component.grid.row) style.gridRow = `span ${component.grid.row}`;
-    if (component.grid.colStart) style.gridColumnStart = String(component.grid.colStart);
-    if (component.grid.rowStart) style.gridRowStart = String(component.grid.rowStart);
+  if (colStart) {
+    style.gridColumn = `${colStart} / span ${colSpan}`;
+  } else {
+    style.gridColumn = `span ${colSpan}`;
+  }
+
+  const rowSpan = component.grid?.row || 1;
+  const rowStart = component.grid?.rowStart;
+
+  if (rowStart) {
+    style.gridRow = `${rowStart} / span ${rowSpan}`;
+  } else if (component.grid?.row) {
+    style.gridRow = `span ${rowSpan}`;
   }
 
   return style;
@@ -82,19 +91,13 @@ export function getComponentProps(component: ComponentConfig) {
 
     case 'select':
       if (isSelectComponent(component)) {
-        return {
-          ...baseProps,
-          options: component.options
-        };
+        return baseProps;
       }
       break;
 
     case 'radio':
       if (isRadioComponent(component)) {
-        return {
-          ...baseProps,
-          options: component.options
-        };
+        return baseProps;
       }
       break;
   }

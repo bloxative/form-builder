@@ -1,5 +1,5 @@
 import { FormBuilder } from '~/components/form-builder/classes';
-import type { FormConfig } from '~/types/form-builder';
+import type { ComponentConfig, FormConfig } from '~/types/form-builder';
 
 export function useFormBuilder(initialConfig?: FormConfig) {
   const builder = ref(new FormBuilder(initialConfig));
@@ -33,11 +33,15 @@ export function useFormBuilder(initialConfig?: FormConfig) {
     }
   }
 
+  function getFieldName(component: ComponentConfig, index: number): string {
+    return component.name || `field_${index}`;
+  }
+
   // Get initial values for the form
   const initialValues = computed(() => {
     const values: Record<string, unknown> = {};
-    formConfig.value.components.forEach((component) => {
-      const fieldName = component.name!;
+    formConfig.value.components.forEach((component, index) => {
+      const fieldName = getFieldName(component, index);
       if (component.initialValue !== undefined) {
         values[fieldName] = component.initialValue;
       }
@@ -48,11 +52,11 @@ export function useFormBuilder(initialConfig?: FormConfig) {
   // Get validation schema for the form
   const validationSchema = computed(() => {
     const schema: Record<string, unknown> = {};
-    formConfig.value.components.forEach((component) => {
+    formConfig.value.components.forEach((component, index) => {
       if (component.validation) {
         const rules = generateValidationRules(component.validation);
         if (rules) {
-          const fieldName = component.name!;
+          const fieldName = getFieldName(component, index);
           schema[fieldName] = rules;
         }
       }
@@ -73,6 +77,7 @@ export function useFormBuilder(initialConfig?: FormConfig) {
     initialValues,
     validationSchema,
     gridStyle,
-    parseSchema
+    parseSchema,
+    getFieldName
   };
 }
