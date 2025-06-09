@@ -10,8 +10,7 @@ const formSchema = ref(
           validation: {
             required: true,
             minLength: 2
-          },
-          grid: { col: 6 }
+          }
         },
         {
           type: 'text',
@@ -21,8 +20,7 @@ const formSchema = ref(
           validation: {
             required: true,
             email: true
-          },
-          grid: { col: 6 }
+          }
         }
       ],
       gridColumns: 12,
@@ -51,12 +49,12 @@ function handleFormCancel() {
 </script>
 
 <template>
-  <div class="grid h-screen grid-cols-[480px_1fr] grid-rows-1">
-    <div class="bg-[#1e1e1e]">
+  <div class="grid min-h-screen grid-cols-[480px_1fr] items-start">
+    <div class="size-full bg-[#1e1e1e]">
       <Codemirror v-model="formSchema" class="size-full" />
     </div>
 
-    <div class="m-6 overflow-auto rounded-lg border">
+    <div class="sticky top-6 mx-6 max-h-[calc(100vh-6rem)] overflow-auto rounded-lg border">
       <div class="border-b bg-neutral-100 px-4 py-2">
         <h3 class="text-sm font-bold">Form Preview</h3>
       </div>

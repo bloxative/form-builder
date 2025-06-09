@@ -32,100 +32,6 @@ const gridStyle = computed(() => ({
   gap: formConfig.value.gap || '1rem'
 }));
 
-function getComponentGridStyle(component: ComponentConfig) {
-  if (!component.grid) return {};
-
-  const style: Record<string, string> = {};
-  if (component.grid.col) style.gridColumn = `span ${component.grid.col}`;
-  if (component.grid.row) style.gridRow = `span ${component.grid.row}`;
-  if (component.grid.colStart) style.gridColumnStart = String(component.grid.colStart);
-  if (component.grid.rowStart) style.gridRowStart = String(component.grid.rowStart);
-
-  return style;
-}
-
-function getComponentProps(component: ComponentConfig) {
-  const { validation, grid, defaultValue, type, id, ...baseProps } = component;
-
-  switch (component.type) {
-    case 'text':
-      if (isTextComponent(component)) {
-        return {
-          ...baseProps,
-          type: component.inputType || 'text'
-        };
-      }
-      break;
-
-    case 'number':
-      if (isNumberComponent(component)) {
-        return {
-          ...baseProps,
-          type: 'number',
-          min: component.min,
-          max: component.max,
-          step: component.step
-        };
-      }
-      break;
-
-    case 'date':
-      if (isDateComponent(component)) {
-        return {
-          ...baseProps,
-          type: 'date',
-          min: component.min,
-          max: component.max
-        };
-      }
-      break;
-
-    case 'time':
-      if (isTimeComponent(component)) {
-        return {
-          ...baseProps,
-          type: 'time',
-          min: component.min,
-          max: component.max,
-          step: component.step
-        };
-      }
-      break;
-
-    case 'file':
-      if (isFileComponent(component)) {
-        return {
-          ...baseProps,
-          type: 'file',
-          accept: component.accept,
-          multiple: component.multiple,
-          capture: component.capture
-        };
-      }
-      break;
-
-    case 'select':
-      if (isSelectComponent(component)) {
-        return {
-          ...baseProps,
-          options: component.options
-        };
-      }
-      break;
-
-    case 'radio':
-      if (isRadioComponent(component)) {
-        return {
-          ...baseProps,
-          options: component.options
-        };
-      }
-      break;
-  }
-
-  return baseProps;
-}
-
 function handleSubmit(values: Record<string, unknown>) {
   submittedData.value = values;
   emit('submit', values);
@@ -168,11 +74,12 @@ function handleCancel() {
       class="space-y-4"
       @submit="handleSubmit"
     >
-      <div class="grid gap-4" :style="gridStyle">
+      <div class="grid" :style="gridStyle">
         <div
           v-for="(component, index) in formConfig.components"
           :key="component.id || index"
           :style="getComponentGridStyle(component)"
+          class="[&>*]:w-full"
         >
           <Field v-slot="{ field, errors }" :name="getFieldName(component, index)">
             <component
@@ -183,6 +90,7 @@ function handleCancel() {
               @update:model-value="field.onChange"
               @blur="field.onBlur"
             />
+            <FormFieldError :error="errors[0]" />
           </Field>
         </div>
       </div>
@@ -190,19 +98,27 @@ function handleCancel() {
       <!-- Form Actions -->
       <div
         v-if="formConfig.submitButton || formConfig.cancelButton"
-        class="mt-6 flex gap-2 border-t pt-6"
+        class="mt-6 flex justify-end gap-2"
       >
-        <UButton v-if="formConfig.submitButton" v-bind="formConfig.submitButton" type="submit">
-          {{ formConfig.submitButton.label }}
-        </UButton>
-
         <UButton
           v-if="formConfig.cancelButton"
           v-bind="formConfig.cancelButton"
+          color="neutral"
+          variant="outline"
           type="button"
           @click="handleCancel"
         >
           {{ formConfig.cancelButton.label }}
+        </UButton>
+
+        <UButton
+          v-if="formConfig.submitButton"
+          v-bind="formConfig.submitButton"
+          color="neutral"
+          variant="solid"
+          type="submit"
+        >
+          {{ formConfig.submitButton.label }}
         </UButton>
       </div>
     </Form>
