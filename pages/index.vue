@@ -47,10 +47,12 @@ const formSchema = ref(
       gap: '1rem',
       submitButton: {
         label: 'Submit',
-        variant: 'primary'
+        color: 'neutral',
+        variant: 'solid'
       },
       cancelButton: {
         label: 'Cancel',
+        color: 'neutral',
         variant: 'outline'
       }
     },

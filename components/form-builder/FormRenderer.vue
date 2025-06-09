@@ -103,21 +103,13 @@ function handleCancel() {
         <UButton
           v-if="formConfig.cancelButton"
           v-bind="formConfig.cancelButton"
-          color="neutral"
-          variant="outline"
           type="button"
           @click="handleCancel"
         >
           {{ formConfig.cancelButton.label }}
         </UButton>
 
-        <UButton
-          v-if="formConfig.submitButton"
-          v-bind="formConfig.submitButton"
-          color="neutral"
-          variant="solid"
-          type="submit"
-        >
+        <UButton v-if="formConfig.submitButton" v-bind="formConfig.submitButton" type="submit">
           {{ formConfig.submitButton.label }}
         </UButton>
       </div>
