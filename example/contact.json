@@ -1,0 +1,91 @@
+{
+  "components": [
+    {
+      "name": "name",
+      "type": "text",
+      "label": "Name",
+      "placeholder": "John Doe",
+      "validation": {
+        "required": true,
+        "minLength": 2
+      },
+      "grid": {
+        "col": 3
+      }
+    },
+    {
+      "name": "email",
+      "type": "text",
+      "inputType": "email",
+      "label": "Email",
+      "placeholder": "john@example.com",
+      "validation": {
+        "required": true,
+        "email": true
+      },
+      "grid": {
+        "col": 3
+      }
+    },
+    {
+      "name": "department",
+      "type": "select",
+      "label": "Department",
+      "placeholder": "Select a department",
+      "items": [
+        { "label": "Sales", "value": "sales" },
+        { "label": "Marketing", "value": "marketing" },
+        { "label": "Other", "value": "other" }
+      ],
+      "grid": {
+        "col": 6
+      }
+    },
+    {
+      "name": "comment",
+      "type": "textarea",
+      "label": "Additional Comments",
+      "placeholder": "Let us know how we can help...",
+      "grid": {
+        "col": 6,
+        "row": 2
+      }
+    },
+    {
+      "name": "newsletter",
+      "type": "checkbox",
+      "label": "Sign me up for the newsletter",
+      "grid": {
+        "col": 6,
+        "colStart": 7
+      }
+    },
+    {
+      "name": "contact_preference",
+      "type": "radio",
+      "label": "Contact Preference",
+      "items": [
+        { "label": "Email", "value": "email" },
+        { "label": "Phone", "value": "phone" },
+        { "label": "Either", "value": "either" }
+      ],
+      "grid": {
+        "col": 6,
+        "colStart": 7,
+        "rowStart": 2
+      }
+    }
+  ],
+  "gridColumns": 12,
+  "gap": "1rem",
+  "submitButton": {
+    "label": "Submit",
+    "color": "neutral",
+    "variant": "solid"
+  },
+  "cancelButton": {
+    "label": "Cancel",
+    "color": "neutral",
+    "variant": "outline"
+  }
+}
