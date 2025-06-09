@@ -23,7 +23,7 @@ export type ComponentType =
   | 'switch'
   | 'slider';
 
-export const componentMapping = {
+export const componentMapping: Record<ComponentType, string> = {
   text: 'UInput',
   textarea: 'UTextarea',
   number: 'UInput',
@@ -34,8 +34,8 @@ export const componentMapping = {
   time: 'UInput',
   file: 'UInput',
   switch: 'USwitch',
-  range: 'URange'
-} as const;
+  slider: 'USlider'
+};
 
 export interface GridLayout {
   col?: number; // Number of columns this component spans
@@ -89,8 +89,7 @@ export interface TextareaComponentConfig
   type: 'textarea';
 }
 
-export interface SelectComponentConfig<>extends Omit<SelectProps, 'modelValue'>,
-    FormBuilderFields {
+export interface SelectComponentConfig extends Omit<SelectProps, 'modelValue'>, FormBuilderFields {
   type: 'select';
 }
 
@@ -157,7 +156,6 @@ export type ComponentConfig =
   | SliderComponentConfig;
 
 export interface FormConfig {
-  name: string;
   components: ComponentConfig[];
   gridColumns?: number; // Total number of grid columns (default: 12)
   gap?: string; // Gap between grid items

@@ -9,6 +9,7 @@ import {
 import { history, defaultKeymap, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { bracketMatching, indentOnInput } from '@codemirror/language';
 import { autocompletion } from '@codemirror/autocomplete';
+import { json } from '@codemirror/lang-json';
 import { vsCodeDark } from '@fsegurai/codemirror-theme-vscode-dark';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -27,6 +28,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       indentOnInput(),
       history(),
       autocompletion(),
+      json(),
       vsCodeDark
     ]
   });

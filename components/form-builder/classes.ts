@@ -1,5 +1,16 @@
 import type { ComponentConfig, FormConfig } from '~/types/form-builder';
 
+export class FormBuilderError extends Error {
+  constructor(
+    message: string,
+    public _errors?: string[]
+  ) {
+    console.log(message);
+    super(message);
+    this.name = 'FormBuilderError';
+  }
+}
+
 export class FormComponent<T extends ComponentConfig = ComponentConfig> {
   private config: T;
 
@@ -49,7 +60,7 @@ export class FormComponent<T extends ComponentConfig = ComponentConfig> {
       errors.push('Component name is required');
     }
 
-    if (!/^[a-zA-Z][a-zA-Z0-9_]*$/.test(this.config.name ?? '')) {
+    if (this.config.name && !/^[a-zA-Z][a-zA-Z0-9_]*$/.test(this.config.name)) {
       errors.push(
         'Component name must start with a letter and contain only letters, numbers, and underscores'
       );
@@ -68,7 +79,6 @@ export class FormBuilder {
 
   constructor(config?: Partial<FormConfig>) {
     this.form = {
-      name: config?.name || 'New Form',
       components: [],
       gridColumns: config?.gridColumns || 12,
       gap: config?.gap || '1rem',
@@ -87,11 +97,10 @@ export class FormBuilder {
     }
   }
 
-  addComponent(component: FormComponent): boolean {
+  addComponent(component: FormComponent): void {
     const validation = component.validate();
     if (!validation.valid) {
-      console.error('Component validation failed:', validation.errors);
-      return false;
+      throw new FormBuilderError(`Component validation failed (${validation.errors.join(', ')})`);
     }
 
     // Check for duplicate names
@@ -100,13 +109,11 @@ export class FormBuilder {
     );
 
     if (existingComponent) {
-      console.error(`Component with name "${component.name}" already exists`);
-      return false;
+      throw new FormBuilderError(`Component with name "${component.name}" already exists`);
     }
 
     this.components.set(component.id, component);
     this.syncComponentsArray();
-    return true;
   }
 
   removeComponent(componentId: string): boolean {
@@ -139,12 +146,8 @@ export class FormBuilder {
   validate(): { valid: boolean; errors: Record<string, string[]> } {
     const errors: Record<string, string[]> = {};
 
-    if (!this.form.name) {
-      errors.form = ['Form name is required'];
-    }
-
     if (this.components.size === 0) {
-      errors.form = [...(errors.form || []), 'Form must have at least one component'];
+      errors.form = ['Form must have at least one component'];
     }
 
     this.components.forEach((component) => {
@@ -158,5 +161,14 @@ export class FormBuilder {
       valid: Object.keys(errors).length === 0,
       errors
     };
+  }
+
+  static fromJSON(json: string): FormBuilder {
+    const config = JSON.parse(json) as FormConfig;
+    return new FormBuilder(config);
+  }
+
+  exportJSON(): string {
+    return JSON.stringify(this.getFormConfig(), null, 2);
   }
 }
