@@ -8,7 +8,7 @@ const { resolve } = createResolver(import.meta.url);
  * Modules
  */
 const modules = defineNuxtConfig({
-  modules: ['@nuxt/ui', '@vee-validate/nuxt'],
+  modules: ['@nuxt/ui', '@vee-validate/nuxt', 'vue-sonner/nuxt'],
 
   ui: {
     fonts: false,
