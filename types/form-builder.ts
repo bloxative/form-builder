@@ -1,5 +1,4 @@
 import type { RuleExpression } from 'vee-validate';
-import { UInput, UTextarea, USelect, UCheckbox, URadioGroup, USwitch, USlider } from '#components';
 import type {
   InputProps,
   TextareaProps,
@@ -23,20 +22,6 @@ export type ComponentType =
   | 'file'
   | 'switch'
   | 'slider';
-
-export const componentMapping: Record<ComponentType, unknown> = {
-  text: UInput,
-  textarea: UTextarea,
-  number: UInput,
-  select: USelect,
-  checkbox: UCheckbox,
-  radio: URadioGroup,
-  date: UInput,
-  time: UInput,
-  file: UInput,
-  switch: USwitch,
-  slider: USlider
-};
 
 export interface GridLayout {
   col?: number; // Number of columns this component spans
@@ -66,6 +51,7 @@ export interface FormBuilderFields {
   type: ComponentType;
   validation?: ValidationRule;
   grid?: GridLayout;
+  initialValue?: unknown;
 }
 
 export interface TextComponentConfig
@@ -92,6 +78,7 @@ export interface TextareaComponentConfig
 
 export interface SelectComponentConfig extends Omit<SelectProps, 'modelValue'>, FormBuilderFields {
   type: 'select';
+  options: { label: string; value: unknown }[];
 }
 
 export interface CheckboxComponentConfig
@@ -105,6 +92,7 @@ export interface RadioComponentConfig
     FormBuilderFields {
   id: string;
   type: 'radio';
+  options: { label: string; value: unknown }[];
 }
 
 export interface DateComponentConfig

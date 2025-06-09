@@ -5,7 +5,6 @@ export class FormBuilderError extends Error {
     message: string,
     public _errors?: string[]
   ) {
-    console.log(message);
     super(message);
     this.name = 'FormBuilderError';
   }
@@ -39,18 +38,6 @@ export class FormComponent<T extends ComponentConfig = ComponentConfig> {
 
   getConfig(): T {
     return { ...this.config };
-  }
-
-  updateConfig(updates: Partial<T>): void {
-    this.config = { ...this.config, ...updates };
-  }
-
-  setGridLayout(grid: Partial<T['grid']>): void {
-    this.config.grid = { ...this.config.grid, ...grid };
-  }
-
-  setValidation(validation: Partial<T['validation']>): void {
-    this.config.validation = { ...this.config.validation, ...validation };
   }
 
   validate(): { valid: boolean; errors: string[] } {
@@ -116,20 +103,8 @@ export class FormBuilder {
     this.syncComponentsArray();
   }
 
-  removeComponent(componentId: string): boolean {
-    const deleted = this.components.delete(componentId);
-    if (deleted) {
-      this.syncComponentsArray();
-    }
-    return deleted;
-  }
-
   getComponent(componentId: string): FormComponent | undefined {
     return this.components.get(componentId);
-  }
-
-  updateFormConfig(updates: Partial<Omit<FormConfig, 'components'>>): void {
-    this.form = { ...this.form, ...updates };
   }
 
   private syncComponentsArray(): void {
@@ -140,26 +115,6 @@ export class FormBuilder {
     return {
       ...this.form,
       components: Array.from(this.components.values()).map((c) => c.getConfig())
-    };
-  }
-
-  validate(): { valid: boolean; errors: Record<string, string[]> } {
-    const errors: Record<string, string[]> = {};
-
-    if (this.components.size === 0) {
-      errors.form = ['Form must have at least one component'];
-    }
-
-    this.components.forEach((component) => {
-      const validation = component.validate();
-      if (!validation.valid) {
-        errors[component.id] = validation.errors;
-      }
-    });
-
-    return {
-      valid: Object.keys(errors).length === 0,
-      errors
     };
   }
 

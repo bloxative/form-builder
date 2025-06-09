@@ -1,5 +1,5 @@
-import { FormComponent, FormBuilder, FormBuilderError } from '~/components/form-builder/classes';
-import type { FormConfig, ComponentConfig } from '~/types/form-builder';
+import { FormBuilder } from '~/components/form-builder/classes';
+import type { FormConfig } from '~/types/form-builder';
 
 export function useFormBuilder(initialConfig?: FormConfig) {
   const builder = ref(new FormBuilder(initialConfig));
@@ -33,18 +33,13 @@ export function useFormBuilder(initialConfig?: FormConfig) {
     }
   }
 
-  // Generate field names for form inputs
-  function getFieldName(component: ComponentConfig, index: number): string {
-    return component.name || `field_${index}`;
-  }
-
   // Get initial values for the form
   const initialValues = computed(() => {
     const values: Record<string, unknown> = {};
-    formConfig.value.components.forEach((component, index) => {
-      const fieldName = getFieldName(component, index);
-      if (component.defaultValue !== undefined) {
-        values[fieldName] = component.defaultValue;
+    formConfig.value.components.forEach((component) => {
+      const fieldName = component.name!;
+      if (component.initialValue !== undefined) {
+        values[fieldName] = component.initialValue;
       }
     });
     return values;
@@ -53,11 +48,11 @@ export function useFormBuilder(initialConfig?: FormConfig) {
   // Get validation schema for the form
   const validationSchema = computed(() => {
     const schema: Record<string, unknown> = {};
-    formConfig.value.components.forEach((component, index) => {
+    formConfig.value.components.forEach((component) => {
       if (component.validation) {
         const rules = generateValidationRules(component.validation);
         if (rules) {
-          const fieldName = getFieldName(component, index);
+          const fieldName = component.name!;
           schema[fieldName] = rules;
         }
       }
@@ -65,48 +60,10 @@ export function useFormBuilder(initialConfig?: FormConfig) {
     return schema;
   });
 
-  function addComponent(config: ComponentConfig) {
-    try {
-      const component = new FormComponent(config);
-      builder.value.addComponent(component);
-      return component.id;
-    } catch (error) {
-      if (error instanceof FormBuilderError) {
-        parseError.value = error.message;
-      }
-      throw error;
-    }
-  }
-
-  function updateComponent(id: string, updates: Partial<ComponentConfig>) {
-    const component = builder.value.getComponent(id);
-    if (component) {
-      component.updateConfig(updates);
-      // Force reactivity
-      builder.value = new FormBuilder(builder.value.getFormConfig());
-    }
-  }
-
-  function removeComponent(id: string) {
-    builder.value.removeComponent(id);
-    if (selectedComponent.value === id) {
-      selectedComponent.value = null;
-    }
-  }
-
-  function updateFormSettings(updates: Partial<FormConfig>) {
-    builder.value.updateFormConfig(updates);
-  }
-
-  function resetForm() {
-    builder.value = new FormBuilder();
-    selectedComponent.value = null;
-    parseError.value = null;
-  }
-
-  function validateForm() {
-    return builder.value.validate();
-  }
+  const gridStyle = computed(() => ({
+    gridTemplateColumns: `repeat(${formConfig.value.gridColumns || 12}, 1fr)`,
+    gap: formConfig.value.gap || '1rem'
+  }));
 
   return {
     formConfig,
@@ -115,13 +72,7 @@ export function useFormBuilder(initialConfig?: FormConfig) {
     parseError,
     initialValues,
     validationSchema,
-    parseSchema,
-    getFieldName,
-    addComponent,
-    updateComponent,
-    removeComponent,
-    updateFormSettings,
-    resetForm,
-    validateForm
+    gridStyle,
+    parseSchema
   };
 }

@@ -16,7 +16,12 @@ export function getComponentGridStyle(component: ComponentConfig, gridColumns: n
 }
 
 export function getComponentProps(component: ComponentConfig) {
-  const { validation, grid, defaultValue, type, id, ...baseProps } = component;
+  const baseProps = { ...component } as Record<string, unknown>;
+
+  delete baseProps.type;
+  delete baseProps.validation;
+  delete baseProps.grid;
+  delete baseProps.defaultValue;
 
   switch (component.type) {
     case 'text':

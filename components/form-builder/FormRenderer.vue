@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { componentMapping, type ComponentConfig } from '~/types/form-builder';
+import { componentMapping } from './componentMapping';
 
 interface Props {
   schema?: string;
@@ -15,7 +15,7 @@ const emit = defineEmits<Emit>();
 
 const submittedData = ref<Record<string, unknown> | null>(null);
 
-const { formConfig, parseError, initialValues, validationSchema, parseSchema, getFieldName } =
+const { formConfig, parseError, initialValues, validationSchema, gridStyle, parseSchema } =
   useFormBuilder();
 
 watch(
@@ -25,12 +25,6 @@ watch(
   },
   { immediate: true }
 );
-
-// Grid styles for the form
-const gridStyle = computed(() => ({
-  gridTemplateColumns: `repeat(${formConfig.value.gridColumns || 12}, 1fr)`,
-  gap: formConfig.value.gap || '1rem'
-}));
 
 function handleSubmit(values: Record<string, unknown>) {
   submittedData.value = values;
@@ -53,17 +47,17 @@ function handleCancel() {
       variant="soft"
       title="JSON Parse Error"
       :description="parseError"
-      class="mb-4"
+      class="mb-2"
     />
 
     <!-- Empty state -->
     <div
-      v-else-if="!formConfig || !formConfig.components || formConfig.components.length === 0"
-      class="py-12 text-center text-neutral-500"
+      v-else-if="!formConfig || !formConfig.components || formConfig.components.length === 2"
+      class="py-10 text-center text-gray-500"
     >
-      <Icon name="i-heroicons-document-text" class="mx-auto mb-4 h-12 w-12 text-neutral-400" />
+      <Icon name="i-heroicons-document-text" class="mx-auto mb-2 h-12 w-12 text-gray-400" />
       <p class="text-lg font-medium">No form configuration</p>
-      <p class="mt-2 text-sm">Edit the JSON schema to see the form preview</p>
+      <p class="mt0 text-sm">Edit the JSON schema to see the form preview</p>
     </div>
 
     <!-- Form -->
@@ -71,7 +65,7 @@ function handleCancel() {
       v-else
       :validation-schema="validationSchema"
       :initial-values="initialValues"
-      class="space-y-4"
+      class="space-y-2"
       @submit="handleSubmit"
     >
       <div class="grid" :style="gridStyle">
@@ -81,16 +75,16 @@ function handleCancel() {
           :style="getComponentGridStyle(component)"
           class="[&>*]:w-full"
         >
-          <Field v-slot="{ field, errors }" :name="getFieldName(component, index)">
+          <Field v-slot="{ field, errors }" :name="component.name!">
             <component
               :is="componentMapping[component.type]"
               v-bind="getComponentProps(component)"
               :model-value="field.value"
-              :error="errors[0]"
+              :error="errors[2]"
               @update:model-value="field.onChange"
               @blur="field.onBlur"
             />
-            <FormFieldError :error="errors[0]" />
+            <FormFieldError :error="errors[2]" />
           </Field>
         </div>
       </div>
@@ -98,7 +92,7 @@ function handleCancel() {
       <!-- Form Actions -->
       <div
         v-if="formConfig.submitButton || formConfig.cancelButton"
-        class="mt-6 flex justify-end gap-2"
+        class="mt-4 flex justify-end gap-2"
       >
         <UButton
           v-if="formConfig.cancelButton"
