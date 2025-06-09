@@ -20,64 +20,50 @@ export function generateValidationRules(
 ): RuleExpression<unknown> | undefined {
   if (!validation) return undefined;
 
-  const rules: Record<string, unknown> = {};
+  const {
+    required,
+    min,
+    max,
+    minLength,
+    maxLength,
+    email,
+    url,
+    numeric,
+    alpha,
+    alphaNum,
+    pattern,
+    custom
+  } = validation;
 
-  if (validation.required) rules.required = true;
-  if (validation.min !== undefined) rules.min_value = validation.min;
-  if (validation.max !== undefined) rules.max_value = validation.max;
-  if (validation.minLength !== undefined) rules.min = validation.minLength;
-  if (validation.maxLength !== undefined) rules.max = validation.maxLength;
-  if (validation.email) rules.email = true;
-  if (validation.url) rules.url = true;
-  if (validation.numeric) rules.numeric = true;
-  if (validation.alpha) rules.alpha = true;
-  if (validation.alphaNum) rules.alpha_num = true;
-  if (validation.pattern) rules.regex = validation.pattern;
-  if (validation.custom) return validation.custom;
+  if (custom) return custom;
 
-  return rules;
+  return {
+    ...(required && { required: true }),
+    ...(min !== undefined && { min_value: min }),
+    ...(max !== undefined && { max_value: max }),
+    ...(minLength !== undefined && { min: minLength }),
+    ...(maxLength !== undefined && { max: maxLength }),
+    ...(email && { email: true }),
+    ...(url && { url: true }),
+    ...(numeric && { numeric: true }),
+    ...(alpha && { alpha: true }),
+    ...(alphaNum && { alpha_num: true }),
+    ...(pattern && { regex: pattern })
+  };
 }
 
-export function isTextComponent(config: ComponentConfig): config is TextComponentConfig {
-  return config.type === 'text';
+function createTypeGuard<T extends ComponentConfig>(type: T['type']) {
+  return (config: ComponentConfig): config is T => config.type === type;
 }
 
-export function isSelectComponent(config: ComponentConfig): config is SelectComponentConfig {
-  return config.type === 'select';
-}
-
-export function isRadioComponent(config: ComponentConfig): config is RadioComponentConfig {
-  return config.type === 'radio';
-}
-
-export function isCheckboxComponent(config: ComponentConfig): config is CheckboxComponentConfig {
-  return config.type === 'checkbox';
-}
-
-export function isNumberComponent(config: ComponentConfig): config is NumberComponentConfig {
-  return config.type === 'number';
-}
-
-export function isTextareaComponent(config: ComponentConfig): config is TextareaComponentConfig {
-  return config.type === 'textarea';
-}
-
-export function isDateComponent(config: ComponentConfig): config is DateComponentConfig {
-  return config.type === 'date';
-}
-
-export function isTimeComponent(config: ComponentConfig): config is TimeComponentConfig {
-  return config.type === 'time';
-}
-
-export function isFileComponent(config: ComponentConfig): config is FileComponentConfig {
-  return config.type === 'file';
-}
-
-export function isSwitchComponent(config: ComponentConfig): config is SwitchComponentConfig {
-  return config.type === 'switch';
-}
-
-export function isSliderComponent(config: ComponentConfig): config is SliderComponentConfig {
-  return config.type === 'slider';
-}
+export const isTextComponent = createTypeGuard<TextComponentConfig>('text');
+export const isSelectComponent = createTypeGuard<SelectComponentConfig>('select');
+export const isRadioComponent = createTypeGuard<RadioComponentConfig>('radio');
+export const isCheckboxComponent = createTypeGuard<CheckboxComponentConfig>('checkbox');
+export const isNumberComponent = createTypeGuard<NumberComponentConfig>('number');
+export const isTextareaComponent = createTypeGuard<TextareaComponentConfig>('textarea');
+export const isDateComponent = createTypeGuard<DateComponentConfig>('date');
+export const isTimeComponent = createTypeGuard<TimeComponentConfig>('time');
+export const isFileComponent = createTypeGuard<FileComponentConfig>('file');
+export const isSwitchComponent = createTypeGuard<SwitchComponentConfig>('switch');
+export const isSliderComponent = createTypeGuard<SliderComponentConfig>('slider');
