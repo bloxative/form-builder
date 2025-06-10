@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ComponentConfig } from '~/types/form-builder';
 import { componentMapping } from './componentMapping';
+import type { ComponentConfig } from '~/types/form-builder';
 
 interface Props {
   schema?: string;
@@ -22,8 +22,8 @@ const {
   parseError,
   initialValues,
   validationSchema,
-  gridStyle,
   parseSchema,
+  getFormGridStyle,
   getComponentGridStyle,
   getComponentProps
 } = useFormBuilder();
@@ -44,18 +44,6 @@ function handleSubmit(values: Record<string, unknown>) {
 function handleCancel() {
   submittedData.value = null;
   emit('cancel');
-}
-
-function isCheckboxComponent(component: ComponentConfig): boolean {
-  return component.settings.type === 'checkbox';
-}
-
-function isSwitchComponent(component: ComponentConfig): boolean {
-  return component.settings.type === 'switch';
-}
-
-function isRadioComponent(component: ComponentConfig): boolean {
-  return component.settings.type === 'radio';
 }
 </script>
 
@@ -90,20 +78,20 @@ function isRadioComponent(component: ComponentConfig): boolean {
       class="space-y-4"
       @submit="handleSubmit"
     >
-      <div class="grid" :style="gridStyle">
+      <div class="grid" :style="getFormGridStyle()">
         <div
           v-for="component in components"
           :key="`${component.settings.type}_${component.settings.name}`"
-          :style="getComponentGridStyle(component)"
+          :style="getComponentGridStyle(component as ComponentConfig)"
           class="flex flex-col"
         >
           <Field v-slot="{ field, errors }" :name="component.settings.name">
             <label
               v-if="
                 !(
-                  isCheckboxComponent(component) ||
-                  isSwitchComponent(component) ||
-                  isRadioComponent(component)
+                  isComponentType(component, 'checkbox') ||
+                  isComponentType(component, 'switch') ||
+                  isComponentType(component, 'radio')
                 )
               "
               :for="component.settings.name"
@@ -111,7 +99,10 @@ function isRadioComponent(component: ComponentConfig): boolean {
             >
               {{ component.settings.label }}
             </label>
-            <p v-else-if="isRadioComponent(component)" class="mb-2 text-sm font-medium">
+            <p
+              v-else-if="isComponentType(component, 'radio') || isComponentType(component, 'date')"
+              class="mb-2 text-sm font-medium"
+            >
               {{ component.settings.label }}
             </p>
             <component

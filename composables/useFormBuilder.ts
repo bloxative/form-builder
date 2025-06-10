@@ -46,11 +46,6 @@ export function useFormBuilder() {
     return schema;
   });
 
-  const gridStyle = computed(() => ({
-    gridTemplateColumns: `repeat(${formSettings.value.gridColumns || 12}, 1fr)`,
-    gap: formSettings.value.gap || '1rem'
-  }));
-
   // Parse schema
   function parseSchema(schema?: string): boolean {
     if (!schema) {
@@ -124,21 +119,27 @@ export function useFormBuilder() {
 
     // Type-specific validation
     if (
-      (component.settings.type === 'select' || component.settings.type === 'radio') &&
+      (isComponentType(component, 'select') || isComponentType(component, 'radio')) &&
       !component.props?.items?.length
     ) {
       errors.push(`${component.settings.type} component must have options`);
     }
 
-    console.log(errors);
-
     return { valid: errors.length === 0, errors };
+  }
+
+  function getFormGridStyle(gridColumns?: number) {
+    const cols = gridColumns || formSettings.value.gridColumns;
+    return {
+      gridTemplateColumns: `repeat(${cols}, 1fr)`,
+      gap: formSettings.value.gap || '1rem'
+    };
   }
 
   function getComponentGridStyle(component: ComponentConfig, gridColumns?: number) {
     const style: Record<string, string> = {};
     const grid = component.settings.grid;
-    const cols = gridColumns || formSettings.value.gridColumns || 12;
+    const cols = gridColumns || formSettings.value.gridColumns;
 
     const colSpan = grid?.col || cols;
     const colStart = grid?.colStart;
@@ -179,10 +180,10 @@ export function useFormBuilder() {
     validationErrors,
     initialValues,
     validationSchema,
-    gridStyle,
     parseSchema,
     addComponent,
     validateComponent,
+    getFormGridStyle,
     getComponentGridStyle,
     getComponentProps
   };

@@ -1,5 +1,5 @@
 import type { RuleExpression } from 'vee-validate';
-import type { ValidationRule } from '~/types/form-builder';
+import type { ValidationRule, ComponentType, ComponentConfig } from '~/types/form-builder';
 
 export function generateValidationRules(
   validation?: ValidationRule
@@ -36,4 +36,11 @@ export function generateValidationRules(
     ...(alphaNum && { alpha_num: true }),
     ...(pattern && { regex: pattern })
   };
+}
+
+export function isComponentType<T extends ComponentType>(
+  component: ComponentConfig,
+  type: T
+): component is ComponentConfig<T> {
+  return component.settings.type === type;
 }

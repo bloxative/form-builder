@@ -54,18 +54,21 @@ export interface ComponentSettings {
   initialValue?: unknown;
 }
 
-export type ComponentProps =
-  | Omit<InputProps, 'modelValue'>
-  | Omit<TextareaProps, 'modelValue'>
-  | Omit<SelectProps, 'modelValue'>
-  | Omit<CheckboxProps, 'modelValue'>
-  | Omit<RadioGroupProps, 'modelValue'>
-  | Omit<SwitchProps, 'modelValue'>
-  | Omit<SliderProps, 'modelValue'>;
+type ComponentPropsMap = {
+  text: InputProps;
+  password: InputProps;
+  date: InputProps;
+  textarea: TextareaProps;
+  select: SelectProps;
+  checkbox: CheckboxProps;
+  radio: RadioGroupProps;
+  switch: SwitchProps;
+  slider: SliderProps;
+};
 
-export interface ComponentConfig {
+export interface ComponentConfig<T extends ComponentType = ComponentType> {
   settings: ComponentSettings;
-  props?: ComponentProps;
+  props?: ComponentPropsMap[T];
 }
 
 export interface FormSettings {
