@@ -4,6 +4,8 @@ import { createResolver } from 'nuxt/kit';
 
 const { resolve } = createResolver(import.meta.url);
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 /**
  * Modules
  */
@@ -21,7 +23,16 @@ const modules = defineNuxtConfig({
  */
 const build = defineNuxtConfig({
   app: {
-    baseURL: '/form-builder/'
+    baseURL: '/form-builder/',
+    head: {
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: 'favicon.ico'
+        }
+      ]
+    }
   },
 
   nitro: {
@@ -61,4 +72,4 @@ const app = defineNuxtConfig({
   css: [resolve('./assets/css/main.css')]
 });
 
-export default defu(modules, build, app);
+export default defu(modules, isProduction && build, app);
