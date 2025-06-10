@@ -1,7 +1,7 @@
 {
   "settings": {
     "gridColumns": 12,
-    "gap": "1rem",
+    "gap": "1.25rem",
     "submitButton": {
       "label": "Submit",
       "color": "neutral",

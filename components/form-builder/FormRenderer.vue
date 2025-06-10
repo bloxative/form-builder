@@ -45,6 +45,10 @@ function handleCancel() {
   submittedData.value = null;
   emit('cancel');
 }
+
+const shouldShowLabel = (component: ComponentConfig) => {
+  return !isComponentType(component, 'checkbox') && !isComponentType(component, 'switch');
+};
 </script>
 
 <template>
@@ -86,26 +90,19 @@ function handleCancel() {
           class="flex flex-col"
         >
           <Field v-slot="{ field, errors }" :name="component.settings.name">
-            <label
-              v-if="
-                !(
-                  isComponentType(component, 'checkbox') ||
-                  isComponentType(component, 'switch') ||
-                  isComponentType(component, 'radio') ||
-                  isComponentType(component, 'date')
-                )
-              "
-              :for="component.settings.name"
-              class="mb-2 text-sm font-medium"
-            >
-              {{ component.settings.label }}
-            </label>
-            <p
-              v-else-if="isComponentType(component, 'radio') || isComponentType(component, 'date')"
-              class="mb-2 text-sm font-medium"
-            >
-              {{ component.settings.label }}
-            </p>
+            <template v-if="shouldShowLabel(component)">
+              <label
+                v-if="!isComponentType(component, 'radio') && !isComponentType(component, 'date')"
+                :for="component.settings.name"
+                class="mb-2 text-sm font-medium"
+              >
+                {{ component.settings.label }}
+              </label>
+              <p v-else class="mb-2 text-sm font-medium">
+                {{ component.settings.label }}
+              </p>
+            </template>
+
             <component
               :is="componentMapping[component.settings.type]"
               v-bind="{ ...getComponentProps(component), id: component.settings.name }"
