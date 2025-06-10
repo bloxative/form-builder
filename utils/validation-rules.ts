@@ -1,19 +1,5 @@
 import type { RuleExpression } from 'vee-validate';
-import type {
-  ValidationRule,
-  ComponentConfig,
-  TextComponentConfig,
-  SelectComponentConfig,
-  RadioComponentConfig,
-  CheckboxComponentConfig,
-  NumberComponentConfig,
-  TextareaComponentConfig,
-  DateComponentConfig,
-  TimeComponentConfig,
-  FileComponentConfig,
-  SwitchComponentConfig,
-  SliderComponentConfig
-} from '~/types/form-builder';
+import type { ValidationRule } from '~/types/form-builder';
 
 export function generateValidationRules(
   validation?: ValidationRule
@@ -51,19 +37,3 @@ export function generateValidationRules(
     ...(pattern && { regex: pattern })
   };
 }
-
-function createTypeGuard<T extends ComponentConfig>(type: T['type']) {
-  return (config: ComponentConfig): config is T => config.type === type;
-}
-
-export const isTextComponent = createTypeGuard<TextComponentConfig>('text');
-export const isSelectComponent = createTypeGuard<SelectComponentConfig>('select');
-export const isRadioComponent = createTypeGuard<RadioComponentConfig>('radio');
-export const isCheckboxComponent = createTypeGuard<CheckboxComponentConfig>('checkbox');
-export const isNumberComponent = createTypeGuard<NumberComponentConfig>('number');
-export const isTextareaComponent = createTypeGuard<TextareaComponentConfig>('textarea');
-export const isDateComponent = createTypeGuard<DateComponentConfig>('date');
-export const isTimeComponent = createTypeGuard<TimeComponentConfig>('time');
-export const isFileComponent = createTypeGuard<FileComponentConfig>('file');
-export const isSwitchComponent = createTypeGuard<SwitchComponentConfig>('switch');
-export const isSliderComponent = createTypeGuard<SliderComponentConfig>('slider');

@@ -1,91 +1,151 @@
 {
+  "settings": {
+    "gridColumns": 12,
+    "gap": "1rem",
+    "submitButton": {
+      "label": "Submit",
+      "color": "neutral",
+      "variant": "solid"
+    },
+    "cancelButton": {
+      "label": "Cancel",
+      "color": "neutral",
+      "variant": "outline"
+    }
+  },
   "components": [
     {
-      "name": "name",
-      "type": "text",
-      "label": "Name",
-      "placeholder": "John Doe",
-      "validation": {
-        "required": true,
-        "minLength": 2
+      "settings": {
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "validation": {
+          "required": true,
+          "minLength": 2
+        },
+        "grid": {
+          "col": 3
+        }
       },
-      "grid": {
-        "col": 3
+      "props": {
+        "placeholder": "John Doe"
       }
     },
     {
-      "name": "email",
-      "type": "text",
-      "inputType": "email",
-      "label": "Email",
-      "placeholder": "john@example.com",
-      "validation": {
-        "required": true,
-        "email": true
+      "settings": {
+        "name": "email",
+        "type": "text",
+        "label": "Email",
+        "validation": {
+          "required": true,
+          "email": true
+        },
+        "grid": {
+          "col": 3
+        }
       },
-      "grid": {
-        "col": 3
+      "props": {
+        "placeholder": "john@example.com",
+        "inputType": "email"
       }
     },
     {
-      "name": "department",
-      "type": "select",
-      "label": "Department",
-      "placeholder": "Select a department",
-      "items": [
-        { "label": "Sales", "value": "sales" },
-        { "label": "Marketing", "value": "marketing" },
-        { "label": "Other", "value": "other" }
-      ],
-      "grid": {
-        "col": 6
+      "settings": {
+        "name": "department",
+        "type": "select",
+        "label": "Department",
+        "grid": {
+          "col": 6
+        }
+      },
+      "props": {
+        "placeholder": "Select a department",
+        "items": [
+          { "label": "Sales", "value": "sales" },
+          { "label": "Marketing", "value": "marketing" },
+          { "label": "Other", "value": "other" }
+        ]
       }
     },
     {
-      "name": "comment",
-      "type": "textarea",
-      "label": "Additional Comments",
-      "placeholder": "Let us know how we can help...",
-      "grid": {
-        "col": 6,
-        "row": 2
+      "settings": {
+        "name": "phone",
+        "type": "text",
+        "label": "Phone",
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "(123) 456-7890"
       }
     },
     {
-      "name": "newsletter",
-      "type": "checkbox",
-      "label": "Sign me up for the newsletter",
-      "grid": {
-        "col": 6,
-        "colStart": 7
+      "settings": {
+        "name": "address",
+        "type": "text",
+        "label": "Address",
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "123 Main St, Anyrown US"
       }
     },
     {
-      "name": "contact_preference",
-      "type": "radio",
-      "label": "Contact Preference",
-      "items": [
-        { "label": "Email", "value": "email" },
-        { "label": "Phone", "value": "phone" },
-        { "label": "Either", "value": "either" }
-      ],
-      "grid": {
-        "col": 6,
-        "colStart": 7,
-        "rowStart": 2
+      "settings": {
+        "name": "date",
+        "type": "date",
+        "label": "Preferred Contact Date",
+        "grid": {
+          "col": 6
+        }
+      }
+    },
+    {
+      "settings": {
+        "name": "comment",
+        "type": "textarea",
+        "label": "Additional Comments",
+        "grid": {
+          "col": 6,
+          "row": 2
+        }
+      },
+      "props": {
+        "placeholder": "Let us know how we can help..."
+      }
+    },
+    {
+      "settings": {
+        "name": "newsletter",
+        "type": "checkbox",
+        "label": "Sign me up for the newsletter",
+        "grid": {
+          "col": 6,
+          "colStart": 7
+        }
+      }
+    },
+    {
+      "settings": {
+        "name": "contact_preference",
+        "type": "radio",
+        "label": "Contact Preference",
+        "grid": {
+          "col": 6,
+          "colStart": 7,
+          "rowStart": 3
+        }
+      },
+      "props": {
+        "items": [
+          { "label": "Email", "value": "email" },
+          { "label": "Phone", "value": "phone" },
+          { "label": "Either", "value": "either" }
+        ]
       }
     }
-  ],
-  "gridColumns": 12,
-  "gap": "1rem",
-  "submitButton": {
-    "label": "Submit",
-    "color": "neutral",
-    "variant": "solid"
-  },
-  "cancelButton": {
-    "label": "Cancel",
-    "color": "neutral",
-    "variant": "outline"
-  }
+  ]
 }

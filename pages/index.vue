@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Code from '~/components/code.vue';
+import Code from '~/components/Code.vue';
 import contactFormSchema from '~/example/contact.json';
 
 const formSchema = ref(JSON.stringify(contactFormSchema, null, 2));
