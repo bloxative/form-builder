@@ -86,7 +86,7 @@ const shouldShowLabel = (component: ComponentConfig) => {
         <div
           v-for="component in components"
           :key="`${component.settings.type}_${component.settings.name}`"
-          :style="getComponentGridStyle(component as ComponentConfig)"
+          :style="getComponentGridStyle(component)"
           class="flex flex-col"
         >
           <Field v-slot="{ field, errors }" :name="component.settings.name">
@@ -107,7 +107,6 @@ const shouldShowLabel = (component: ComponentConfig) => {
               :is="componentMapping[component.settings.type]"
               v-bind="{ ...getComponentProps(component), id: component.settings.name }"
               :model-value="field.value"
-              :error="errors[0]"
               class="size-full items-start"
               @update:model-value="field.onChange"
               @blur="field.onBlur"

@@ -45,10 +45,10 @@ export interface ValidationRule {
   message?: string;
 }
 
-export interface ComponentSettings {
+export interface ComponentSettings<T extends ComponentType = ComponentType> {
   name: string;
   label: string;
-  type: ComponentType;
+  type: T;
   validation?: ValidationRule;
   grid?: GridLayout;
   initialValue?: unknown;
@@ -67,7 +67,7 @@ type ComponentPropsMap = {
 };
 
 export interface ComponentConfig<T extends ComponentType = ComponentType> {
-  settings: ComponentSettings;
+  settings: ComponentSettings<T>;
   props?: ComponentPropsMap[T];
 }
 

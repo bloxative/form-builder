@@ -95,11 +95,13 @@ export function useFormBuilder() {
       throw new FormBuilderError(`Component validation failed:\n${validation.errors.join('\n')}`);
     }
 
-    if (components.value.has(component.settings.name)) {
-      throw new FormBuilderError(`Component with name "${component.settings.name}" already exists`);
+    const componentName = component.settings.name;
+
+    if (components.value.has(componentName)) {
+      throw new FormBuilderError(`Component with name "${componentName}" already exists`);
     }
 
-    components.value.set(component.settings.name, component);
+    components.value.set(componentName, component);
   }
 
   function validateComponent(component: ComponentConfig): { valid: boolean; errors: string[] } {
@@ -165,11 +167,12 @@ export function useFormBuilder() {
   function getComponentProps(component: ComponentConfig) {
     const { settings, props = {} } = component;
 
-    // Always include name and label from settings
     return {
       name: settings.name,
-      label: settings.label,
-      ...props
+      ...props,
+      ...((isComponentType(component, 'checkbox') || isComponentType(component, 'switch')) && {
+        label: settings.label
+      })
     };
   }
 

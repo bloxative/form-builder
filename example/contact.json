@@ -45,8 +45,7 @@
         }
       },
       "props": {
-        "placeholder": "john@example.com",
-        "inputType": "email"
+        "placeholder": "john@example.com"
       }
     },
     {
