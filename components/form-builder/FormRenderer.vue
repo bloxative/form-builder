@@ -91,7 +91,8 @@ function handleCancel() {
                 !(
                   isComponentType(component, 'checkbox') ||
                   isComponentType(component, 'switch') ||
-                  isComponentType(component, 'radio')
+                  isComponentType(component, 'radio') ||
+                  isComponentType(component, 'date')
                 )
               "
               :for="component.settings.name"

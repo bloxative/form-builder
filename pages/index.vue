@@ -29,11 +29,13 @@ function handleFormCancel() {
       <Codemirror v-model="formSchema" class="size-full" />
     </div>
 
-    <div class="sticky top-6 mx-6 max-h-[calc(100vh-3rem)] overflow-auto rounded-lg border">
+    <div
+      class="sticky top-6 mx-6 flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-lg border"
+    >
       <div class="border-b bg-neutral-100 px-4 py-2">
         <h3 class="text-sm font-bold">Form Preview</h3>
       </div>
-      <div class="p-6">
+      <div class="overflow-auto p-6">
         <FormRenderer :schema="formSchema" @submit="handleFormSubmit" @cancel="handleFormCancel" />
       </div>
     </div>
