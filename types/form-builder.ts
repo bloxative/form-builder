@@ -1,5 +1,4 @@
 import type { RuleExpression } from 'vee-validate';
-import { UInput, UTextarea, USelect, UCheckbox, URadioGroup, USwitch, USlider } from '#components';
 import type {
   InputProps,
   TextareaProps,
@@ -14,29 +13,13 @@ import type {
 export type ComponentType =
   | 'text'
   | 'textarea'
-  | 'number'
   | 'select'
   | 'checkbox'
   | 'radio'
-  | 'date'
-  | 'time'
-  | 'file'
   | 'switch'
-  | 'slider';
-
-export const componentMapping: Record<ComponentType, unknown> = {
-  text: UInput,
-  textarea: UTextarea,
-  number: UInput,
-  select: USelect,
-  checkbox: UCheckbox,
-  radio: URadioGroup,
-  date: UInput,
-  time: UInput,
-  file: UInput,
-  switch: USwitch,
-  slider: USlider
-};
+  | 'slider'
+  | 'date'
+  | 'password';
 
 export interface GridLayout {
   col?: number; // Number of columns this component spans
@@ -62,112 +45,44 @@ export interface ValidationRule {
   message?: string;
 }
 
-export interface FormBuilderFields {
+export interface ComponentSettings {
+  name: string;
+  label: string;
   type: ComponentType;
   validation?: ValidationRule;
   grid?: GridLayout;
+  initialValue?: unknown;
 }
 
-export interface TextComponentConfig
-  extends Omit<InputProps, 'modelValue' | 'type'>,
-    FormBuilderFields {
-  type: 'text';
-  inputType?: 'text' | 'email' | 'password' | 'url' | 'tel' | 'search';
+type ComponentPropsMap = {
+  text: InputProps;
+  password: InputProps;
+  date: InputProps;
+  textarea: TextareaProps;
+  select: SelectProps;
+  checkbox: CheckboxProps;
+  radio: RadioGroupProps;
+  switch: SwitchProps;
+  slider: SliderProps;
+};
+
+export interface ComponentConfig<T extends ComponentType = ComponentType> {
+  settings: ComponentSettings;
+  props?: ComponentPropsMap[T];
 }
 
-export interface NumberComponentConfig
-  extends Omit<InputProps, 'modelValue' | 'type'>,
-    FormBuilderFields {
-  type: 'number';
-  min?: number;
-  max?: number;
-  step?: number;
-}
-
-export interface TextareaComponentConfig
-  extends Omit<TextareaProps, 'modelValue'>,
-    FormBuilderFields {
-  type: 'textarea';
-}
-
-export interface SelectComponentConfig extends Omit<SelectProps, 'modelValue'>, FormBuilderFields {
-  type: 'select';
-}
-
-export interface CheckboxComponentConfig
-  extends Omit<CheckboxProps, 'modelValue'>,
-    FormBuilderFields {
-  type: 'checkbox';
-}
-
-export interface RadioComponentConfig
-  extends Omit<RadioGroupProps, 'modelValue'>,
-    FormBuilderFields {
-  id: string;
-  type: 'radio';
-}
-
-export interface DateComponentConfig
-  extends Omit<InputProps, 'modelValue' | 'type'>,
-    FormBuilderFields {
-  type: 'date';
-  min?: string; // ISO date string
-  max?: string; // ISO date string
-}
-
-export interface TimeComponentConfig
-  extends Omit<InputProps, 'modelValue' | 'type'>,
-    FormBuilderFields {
-  type: 'time';
-  min?: string; // Time string HH:MM
-  max?: string; // Time string HH:MM
-  step?: number; // Step in seconds
-}
-
-export interface FileComponentConfig
-  extends Omit<InputProps, 'modelValue' | 'type'>,
-    FormBuilderFields {
-  type: 'file';
-  accept?: string; // File types to accept
-  multiple?: boolean;
-  capture?: 'user' | 'environment';
-}
-
-export interface SwitchComponentConfig extends Omit<SwitchProps, 'modelValue'>, FormBuilderFields {
-  id: string;
-  type: 'switch';
-}
-
-export interface SliderComponentConfig extends Omit<SliderProps, 'modelValue'>, FormBuilderFields {
-  id: string;
-  type: 'slider';
-}
-
-export type ComponentConfig =
-  | TextComponentConfig
-  | NumberComponentConfig
-  | TextareaComponentConfig
-  | SelectComponentConfig
-  | CheckboxComponentConfig
-  | RadioComponentConfig
-  | DateComponentConfig
-  | TimeComponentConfig
-  | FileComponentConfig
-  | SwitchComponentConfig
-  | SliderComponentConfig;
-
-export interface FormConfig {
-  components: ComponentConfig[];
-  gridColumns?: number; // Total number of grid columns (default: 12)
-  gap?: string; // Gap between grid items
-  submitButton?: Omit<ButtonProps, 'type'> & {
-    label: string;
-  };
-  cancelButton?: Omit<ButtonProps, 'type'> & {
-    label: string;
-  };
+export interface FormSettings {
+  gridColumns?: number;
+  gap?: string;
+  submitButton?: Omit<ButtonProps, 'type'> & { label: string };
+  cancelButton?: Omit<ButtonProps, 'type'> & { label: string };
   validateOnMount?: boolean;
   validateOnBlur?: boolean;
   validateOnChange?: boolean;
   validateOnInput?: boolean;
+}
+
+export interface FormConfig {
+  settings?: FormSettings;
+  components: ComponentConfig[];
 }

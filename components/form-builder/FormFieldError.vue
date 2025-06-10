@@ -12,7 +12,7 @@ defineProps<Props>();
     :class="error ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
   >
     <div class="overflow-hidden">
-      <p class="mt-2 ml-2 text-sm text-red-500">
+      <p class="mt-2 ml-2 truncate text-sm text-red-500">
         {{ error }}
       </p>
     </div>

@@ -21,8 +21,7 @@ const modules = defineNuxtConfig({
  */
 const build = defineNuxtConfig({
   app: {
-    baseURL: '/form-builder/',
-    buildAssetsDir: 'assets/'
+    baseURL: '/form-builder/'
   },
 
   nitro: {

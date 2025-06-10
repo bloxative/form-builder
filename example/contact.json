@@ -1,0 +1,151 @@
+{
+  "settings": {
+    "gridColumns": 12,
+    "gap": "1rem",
+    "submitButton": {
+      "label": "Submit",
+      "color": "neutral",
+      "variant": "solid"
+    },
+    "cancelButton": {
+      "label": "Cancel",
+      "color": "neutral",
+      "variant": "outline"
+    }
+  },
+  "components": [
+    {
+      "settings": {
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "validation": {
+          "required": true,
+          "minLength": 2
+        },
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "John Doe"
+      }
+    },
+    {
+      "settings": {
+        "name": "email",
+        "type": "text",
+        "label": "Email",
+        "validation": {
+          "required": true,
+          "email": true
+        },
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "john@example.com",
+        "inputType": "email"
+      }
+    },
+    {
+      "settings": {
+        "name": "department",
+        "type": "select",
+        "label": "Department",
+        "grid": {
+          "col": 6
+        }
+      },
+      "props": {
+        "placeholder": "Select a department",
+        "items": [
+          { "label": "Sales", "value": "sales" },
+          { "label": "Marketing", "value": "marketing" },
+          { "label": "Other", "value": "other" }
+        ]
+      }
+    },
+    {
+      "settings": {
+        "name": "phone",
+        "type": "text",
+        "label": "Phone",
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "(123) 456-7890"
+      }
+    },
+    {
+      "settings": {
+        "name": "address",
+        "type": "text",
+        "label": "Address",
+        "grid": {
+          "col": 3
+        }
+      },
+      "props": {
+        "placeholder": "123 Main St, Anyrown US"
+      }
+    },
+    {
+      "settings": {
+        "name": "date",
+        "type": "date",
+        "label": "Preferred Contact Date",
+        "grid": {
+          "col": 6
+        }
+      }
+    },
+    {
+      "settings": {
+        "name": "comment",
+        "type": "textarea",
+        "label": "Additional Comments",
+        "grid": {
+          "col": 6,
+          "row": 2
+        }
+      },
+      "props": {
+        "placeholder": "Let us know how we can help..."
+      }
+    },
+    {
+      "settings": {
+        "name": "newsletter",
+        "type": "checkbox",
+        "label": "Sign me up for the newsletter",
+        "grid": {
+          "col": 6,
+          "colStart": 7
+        }
+      }
+    },
+    {
+      "settings": {
+        "name": "contact_preference",
+        "type": "radio",
+        "label": "Contact Preference",
+        "grid": {
+          "col": 6,
+          "colStart": 7,
+          "rowStart": 3
+        }
+      },
+      "props": {
+        "items": [
+          { "label": "Email", "value": "email" },
+          { "label": "Phone", "value": "phone" },
+          { "label": "Either", "value": "either" }
+        ]
+      }
+    }
+  ]
+}
