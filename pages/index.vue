@@ -26,7 +26,9 @@ function handleFormCancel() {
 <template>
   <div class="grid min-h-screen grid-cols-[480px_1fr] items-start">
     <div class="size-full bg-[#1e1e1e]">
-      <Codemirror v-model="formSchema" class="size-full" />
+      <ClientOnly>
+        <Codemirror v-model="formSchema" class="size-full" />
+      </ClientOnly>
     </div>
 
     <div
